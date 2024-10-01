@@ -7,4 +7,4 @@ export class CreateUserDto extends PickType(UserEntity, [
   'type',
 ]) {}
 
-export class UpdateUserDto extends PickType(UserEntity, ['email']) {}
+export class UpdateUserDto extends PickType(UserEntity, ['id', 'email']) {}
