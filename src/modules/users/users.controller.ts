@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
 export class UserController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
+  @Get('')
   @ApiOperation({
     summary: 'Get Public User',
   })
@@ -57,15 +57,15 @@ export class UserController {
     return this.usersService.store(payload);
   }
 
-  @Put()
+  @Put(':id')
   @ApiOperation({
     summary: 'Update Public User',
   })
   @ApiOkResponse({
     type: UpdateUserResponse,
   })
-  async update(@Body() data: UpdateUserDto) {
-    const { email, id } = data;
+  async update(@Body() data: UpdateUserDto, @Param('id') id: number) {
+    const { email } = data;
     const payload = {
       email,
     };
