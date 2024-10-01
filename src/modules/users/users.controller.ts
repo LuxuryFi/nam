@@ -38,7 +38,7 @@ export class UserController {
 
   @Post()
   @ApiOperation({
-    summary: 'Update Public User',
+    summary: 'Create Public User',
   })
   @ApiOkResponse({
     type: CreateUserResponse,
