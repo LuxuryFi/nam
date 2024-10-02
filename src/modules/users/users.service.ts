@@ -18,4 +18,19 @@ export class UsersService extends BaseService<UserEntity> {
   getHello(): string {
     return 'Hello World!';
   }
+
+  async validateUser(payload) {
+    const { email } = payload;
+    const user = await this.usersRepository.find({
+      where: {
+        email,
+      },
+    });
+
+    if (user.length > 0) {
+      return false;
+    }
+
+    return true;
+  }
 }

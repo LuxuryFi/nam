@@ -18,4 +18,19 @@ export class InternalService extends BaseService<InternalEntity> {
   getHello(): string {
     return 'Hello World!';
   }
+
+  async validateUser(payload) {
+    const { email } = payload;
+    const user = await this.internalRepository.find({
+      where: {
+        email,
+      },
+    });
+
+    if (user.length > 0) {
+      return false;
+    }
+
+    return true;
+  }
 }
