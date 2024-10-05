@@ -30,6 +30,8 @@ async function bootstrap() {
 
   app.useLogger(app.get(Logger));
   app.setGlobalPrefix(configService.get('service.baseUrl'));
+  app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
+
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
 
   const swaggerConfig = new DocumentBuilder()

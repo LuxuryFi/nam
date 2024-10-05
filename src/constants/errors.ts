@@ -43,4 +43,7 @@ export const Errors = {
     message: 'Email not found',
     code: getUserErrorCode('004'),
   },
+  CATEGORY_NOT_FOUND: {
+    message: 'Category not found'
+  }
 };

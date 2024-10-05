@@ -12,6 +12,9 @@ import { CONFIG } from '../config/config.provider';
 import { UserModule } from '../users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CategoryModule } from '../category/category.module';
+import { ProductModule } from '../product/product.module';
+import { DiscountModule } from '../discount/discount.module';
 
 @Module({
   imports: [
@@ -37,6 +40,9 @@ import { AppService } from './app.service';
     }),
     AuthModule,
     UserModule,
+    CategoryModule,
+    DiscountModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [
