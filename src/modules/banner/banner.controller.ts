@@ -14,36 +14,36 @@ import { Response } from 'express';
 import { HttpStatusCodes } from 'src/constants/common';
 import { Errors } from 'src/constants/errors';
 import { sendResponse } from 'src/utils/response.util';
-import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import { CreateBannerDto, UpdateBannerDto } from './dto/banner.dto';
 
-import { ProductService } from './product.service';
+import { BannerService } from './banner.service';
 import {
-  CreateProductResponse,
-  GetProductResponse,
-  UpdateProductResponse,
-} from './response/product.response';
-@Controller('products')
-@ApiTags('Product')
-export class ProductController {
-  constructor(private readonly productsService: ProductService) {}
+  CreateBannerResponse,
+  GetBannerResponse,
+  UpdateBannerResponse,
+} from './response/banner.response';
+@Controller('banners')
+@ApiTags('Banner')
+export class BannerController {
+  constructor(private readonly bannersService: BannerService) {}
 
   @Get('')
   @ApiOperation({
-    summary: 'Get Public Product',
+    summary: 'Get Public Banner',
   })
   async find(): Promise<object> {
-    return this.productsService.find();
+    return this.bannersService.find();
   }
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Get One Public Product',
+    summary: 'Get One Public Banner',
   })
   @ApiOkResponse({
-    type: GetProductResponse,
+    type: GetBannerResponse,
   })
   async findOne(@Param('id') id: number): Promise<object> {
-    return this.productsService.findOne({
+    return this.bannersService.findOne({
       where: {
         id: id,
       },
@@ -52,30 +52,30 @@ export class ProductController {
 
   @Post()
   @ApiOperation({
-    summary: 'Create Public Product',
+    summary: 'Create Public Banner',
   })
   @ApiOkResponse({
-    type: CreateProductResponse,
+    type: CreateBannerResponse,
   })
-  async create(@Body() data: CreateProductDto, @Res() res: Response) {
+  async create(@Body() data: CreateBannerDto, @Res() res: Response) {
     try {
-      const { price, stock_quantity, expired_date, description, status, user_id, product_name, image } = data;
-
+      const { title, status, description, display_order, area_id, link_url, image_url, start_date, end_date } = data;
       const payload = {
-        price, 
-        expired_date, 
-        description, 
+        title, 
         status, 
-        stock_quantity, 
-        user_id, 
-        product_name, 
-        image,        
-        created_at: new Date(),
+        description, 
+        display_order, 
+        area_id, 
+        link_url, 
+        image_url, 
+        start_date, 
+        end_date,
+        created_at: new Date()
       };
 
       console.log(payload)
 
-      const result = await this.productsService.store(payload);
+      const result = await this.bannersService.store(payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
     } catch (err) {
       console.error('Error:', err); // Use console.error for logging errors
@@ -90,33 +90,32 @@ export class ProductController {
 
   @Put(':id')
   @ApiOperation({
-    summary: 'Update Public Product',
+    summary: 'Update Public Banner',
   })
   @ApiOkResponse({
-    type: UpdateProductResponse,
+    type: UpdateBannerResponse,
   })
   async update(
-    @Body() data: UpdateProductDto,
+    @Body() data: UpdateBannerDto,
     @Param('id') id: number,
     @Res() res: Response,
   ) {
     try {
-      const { price, stock_quantity, expired_date, description, status, user_id, product_name, image } = data;
-
+      const { title, status, description, display_order, area_id, link_url, image_url, start_date, end_date } = data;
       const payload = {
-        price, 
-        expired_date, 
-        description, 
+        title, 
         status, 
-        stock_quantity, 
-        user_id, 
-        product_name, 
-        image,        
-        updated_at: new Date(),
+        description, 
+        display_order, 
+        area_id, 
+        link_url, 
+        image_url, 
+        start_date, 
+        end_date,
+        updated_at: new Date()
       };
 
-
-      const result = await this.productsService.update(id, payload);
+      const result = await this.bannersService.update(id, payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
     } catch (err) {
       console.error('Error:', err); // Use console.error for logging errors
@@ -132,7 +131,7 @@ export class ProductController {
   @Delete(':id')
   async delete(@Param('id') id: number, @Res() res: Response) {
     try {
-      const users = await this.productsService.find({
+      const users = await this.bannersService.find({
         where: {
           id,
         },
@@ -147,7 +146,7 @@ export class ProductController {
         );
       }
 
-      const result = await this.productsService.delete(id);
+      const result = await this.bannersService.delete(id);
       return sendResponse(res, HttpStatusCodes.OK, result, null);
     } catch (err) {
       console.log('Error', err);

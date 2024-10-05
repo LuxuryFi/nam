@@ -15,6 +15,7 @@ import { AppService } from './app.service';
 import { CategoryModule } from '../category/category.module';
 import { ProductModule } from '../product/product.module';
 import { DiscountModule } from '../discount/discount.module';
+import { BannerModule } from '../banner/banner.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { DiscountModule } from '../discount/discount.module';
     CategoryModule,
     DiscountModule,
     ProductModule,
+    BannerModule,
   ],
   controllers: [AppController],
   providers: [
