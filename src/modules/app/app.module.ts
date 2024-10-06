@@ -7,15 +7,17 @@ import { AnyExceptionFilter } from 'src/filters/any-exception.filter';
 import { loggerConfig } from 'src/shared/logger.helper';
 import { getMetadataArgsStorage } from 'typeorm';
 import { AuthModule } from '../auth/auth.module';
+import { BannerModule } from '../banner/banner.module';
+import { CartModule } from '../cart/cart.module';
+import { CategoryModule } from '../category/category.module';
 import { ConfigModule } from '../config/config.module';
 import { CONFIG } from '../config/config.provider';
+import { DiscountModule } from '../discount/discount.module';
+import { OrderModule } from '../order/order.module';
+import { ProductModule } from '../product/product.module';
 import { UserModule } from '../users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CategoryModule } from '../category/category.module';
-import { ProductModule } from '../product/product.module';
-import { DiscountModule } from '../discount/discount.module';
-import { BannerModule } from '../banner/banner.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { BannerModule } from '../banner/banner.module';
     DiscountModule,
     ProductModule,
     BannerModule,
+    OrderModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [
@@ -55,4 +59,4 @@ import { BannerModule } from '../banner/banner.module';
     AppService,
   ],
 })
-export class AppModule {}
+export class AppModule { }
