@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber } from 'class-validator';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('order')
@@ -8,21 +8,20 @@ export class OrderEntity extends BaseEntity {
   id: number;
 
   @ApiProperty()
-  @IsString()
+  @IsBoolean()
   @Column({
-    type: 'char',
-    length: 100,
-    default: 'CREATED',
+    type: 'boolean',
+    default: true,
   })
-  status: string;
+  status: boolean;
 
   @ApiProperty()
-  @IsString()
+  @IsNumber()
   @Column({
-    type: 'char',
-    length: 7,
+    type: 'integer',
+    default: 0,
   })
-  total: string;
+  total: number;
 
   @ApiProperty()
   @IsNumber()

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('order')
+@Entity('order_detail')
 export class DetailEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -39,12 +39,4 @@ export class DetailEntity extends BaseEntity {
     type: 'integer',
   })
   price: number;
-
-  @ApiProperty()
-  @Column({
-    type: Date,
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  created_at: Date;
 }

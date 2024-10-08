@@ -61,27 +61,43 @@ export class OrderController {
       const { user_id } = data;
 
       const carts = await this.ordersService.getCartDetail(user_id);
-      const orderdetail = []
+
+      if (carts.length <= 0) {
+        return sendResponse(
+          res,
+          HttpStatusCodes.CREATED,
+          null,
+          'Cart is empty',
+        ); // Use 201 Created for successful user creation
+      }
+      const orderdetail = [];
       const payload = {
         user_id,
         created_at: new Date(),
-      }
+      };
 
-      const order = await this.ordersService.store(payload)
-
+      const order = await this.ordersService.store(payload);
+      let total: any = 0;
       carts.forEach((cart) => {
+        total = cart.amount * cart.price;
         orderdetail.push({
           product_id: cart.product_id,
           price: cart.price,
           order_id: order.id,
           amount: cart.amount,
-        })
+        });
       });
 
-      const result = await this.ordersService.bulkInsert(carts);
+      console.log('Test', carts);
+      const result = await this.ordersService.bulkInsert(user_id, orderdetail);
+      console.log('Test 2');
 
-      if (result) {
-        return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
+      const updateOrder = await this.ordersService.update(order.id, {
+        total: total,
+      });
+
+      if (updateOrder) {
+        return sendResponse(res, HttpStatusCodes.CREATED, updateOrder, null); // Use 201 Created for successful user creation
       }
       // const result = await this.ordersService.store(payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
@@ -109,11 +125,10 @@ export class OrderController {
     @Res() res: Response,
   ) {
     try {
-      const { user_id } = data;
+      const { user_id, status } = data;
 
       const payload = {
         status,
-        total: '11',
         user_id,
         created_at: new Date(),
       };

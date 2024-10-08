@@ -56,7 +56,6 @@ export class GetOrderResponse {
   })
   created_at: Date;
 
-
   @ApiProperty({
     description: 'User id',
   })

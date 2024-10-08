@@ -46,15 +46,25 @@ export class OrderService extends BaseService<OrderEntity> {
     const result = await this.cartRepository.find({
       where: {
         user_id,
-      }
-    })
+      },
+    });
 
     return result;
   }
 
-  async bulkInsert(payload) {
-    const result = await this.detailRepository.save(payload);
+  async bulkInsert(id, payload) {
+    try {
+      payload.forEach((item) => {
+        this.detailRepository.insert(item);
+      });
 
-    return result;
+      await this.cartRepository.delete({
+        user_id: id,
+      });
+      return true;
+    } catch (err) {
+      console.log('err', err);
+      return false;
+    }
   }
 }
