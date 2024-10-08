@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber } from 'class-validator';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('order')
@@ -35,10 +35,8 @@ export class DetailEntity extends BaseEntity {
   order_id: number;
 
   @ApiProperty()
-  @IsString()
   @Column({
     type: 'integer',
-    length: 7,
   })
   price: number;
 
