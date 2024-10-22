@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Req,
   Res
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -14,6 +15,7 @@ import { Errors } from 'src/constants/errors';
 import { sendResponse } from 'src/utils/response.util';
 import { CreateCartDto } from './dto/cart.dto';
 
+import { Auth } from 'src/decorators/auth.decorator';
 import { CartService } from './cart.service';
 import {
   CreateCartResponse,
@@ -25,11 +27,17 @@ export class CartController {
   constructor(private readonly cartsService: CartService) { }
 
   @Get('')
+  @Auth()
   @ApiOperation({
     summary: 'Get Public Cart',
   })
-  async find(): Promise<object> {
-    return this.cartsService.find();
+  async find(@Req() req: any): Promise<object> {
+    const userId = req.user['id'];
+    return this.cartsService.find({
+      where: {
+        user_id: userId,
+      },
+    });
   }
 
   @Get(':id')
@@ -40,9 +48,9 @@ export class CartController {
     type: GetCartResponse,
   })
   async findOne(@Param('id') id: number): Promise<object> {
-    return this.cartsService.findOne({
+    return this.cartsService.find({
       where: {
-        id: id,
+        user_id: id,
       },
     });
   }
@@ -86,9 +94,16 @@ export class CartController {
     }
   }
 
+  @Auth()
   @Delete(':id')
-  async delete(@Param('id') id: number, @Res() res: Response) {
+  async delete(
+    @Param('id') id: number,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     try {
+      console.log('req', req);
+
       const users = await this.cartsService.find({
         where: {
           id,
