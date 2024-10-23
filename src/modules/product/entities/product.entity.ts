@@ -1,8 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
+import { FavoriteEntity } from 'src/modules/favorite/entities/favorite.entity';
 import { WatchEntity } from 'src/modules/watch/entities/watch.entity';
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('product')
 export class ProductEntity extends BaseEntity {
@@ -96,4 +103,7 @@ export class ProductEntity extends BaseEntity {
 
   @OneToMany(() => WatchEntity, (watch) => watch.product)
   watches: WatchEntity[];
+
+  @OneToMany(() => FavoriteEntity, (favorite) => favorite.product)
+  favorites: FavoriteEntity[];
 }

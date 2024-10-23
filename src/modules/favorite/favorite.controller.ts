@@ -24,11 +24,12 @@ export class FavoriteController {
   constructor(private readonly favoritesService: FavoriteService) {}
 
   @Get('')
+  @Auth()
   @ApiOperation({
     summary: 'Get Public Favorite',
   })
-  async find(): Promise<object> {
-    return this.favoritesService.find();
+  async find(@Req() req: any): Promise<object> {
+    return this.favoritesService.getList(req.user.user_id);
   }
 
   @Post()

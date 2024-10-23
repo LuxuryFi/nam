@@ -1,27 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('order')
+@Entity('cart')
 export class OrderEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @ApiProperty()
-  @IsBoolean()
-  @Column({
-    type: 'boolean',
-    default: true,
-  })
-  status: boolean;
 
   @ApiProperty()
   @IsNumber()
   @Column({
     type: 'integer',
     default: 0,
+    nullable: true,
   })
-  total: number;
+  product_id: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @Column({
+    type: 'integer',
+    default: 0,
+    nullable: true,
+  })
+  amount: number;
 
   @ApiProperty()
   @IsNumber()
@@ -33,10 +35,19 @@ export class OrderEntity extends BaseEntity {
   user_id: number;
 
   @ApiProperty()
+  @IsString()
+  @Column({
+    type: 'char',
+    length: 7,
+  })
+  price: string;
+
+  @ApiProperty()
   @Column({
     type: Date,
     nullable: true,
     default: () => 'CURRENT_TIMESTAMP',
   })
   created_at: Date;
+
 }

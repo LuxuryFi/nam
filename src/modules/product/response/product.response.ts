@@ -38,7 +38,6 @@ export class CreateProductResponse {
   })
   status: boolean;
 
-
   @ApiProperty({
     description: 'Create at',
   })
@@ -92,7 +91,6 @@ export class GetProductResponse {
   })
   status: boolean;
 
-
   @ApiProperty({
     description: 'Create at',
   })
@@ -145,7 +143,6 @@ export class UpdateProductResponse {
     description: 'status',
   })
   status: boolean;
-
 
   @ApiProperty({
     description: 'Create at',
