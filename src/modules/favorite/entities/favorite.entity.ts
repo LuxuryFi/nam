@@ -37,7 +37,9 @@ export class FavoriteEntity extends BaseEntity {
   created_at: Date;
 
   @ApiProperty({ type: () => ProductEntity })
-  @ManyToOne(() => ProductEntity, (product) => product.favorites, { eager: true })
+  @ManyToOne(() => ProductEntity, (product) => product.favorites, {
+    eager: true,
+  })
   @JoinColumn({ name: 'product_id' }) // Specify the column name
   product: ProductEntity;
 }

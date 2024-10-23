@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
+import { DetailEntity } from 'src/modules/detail/entities/detail.entity';
 import { FavoriteEntity } from 'src/modules/favorite/entities/favorite.entity';
 import { WatchEntity } from 'src/modules/watch/entities/watch.entity';
 import {
@@ -106,4 +107,7 @@ export class ProductEntity extends BaseEntity {
 
   @OneToMany(() => FavoriteEntity, (favorite) => favorite.product)
   favorites: FavoriteEntity[];
+
+  @OneToMany(() => DetailEntity, (detail) => detail.product)
+  details: FavoriteEntity[];
 }

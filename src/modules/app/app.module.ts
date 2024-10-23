@@ -12,6 +12,7 @@ import { CartModule } from '../cart/cart.module';
 import { CategoryModule } from '../category/category.module';
 import { ConfigModule } from '../config/config.module';
 import { CONFIG } from '../config/config.provider';
+import { DetailModule } from '../detail/detail.module';
 import { DiscountModule } from '../discount/discount.module';
 import { FavoriteModule } from '../favorite/favorite.module';
 import { OrderModule } from '../order/order.module';
@@ -53,6 +54,7 @@ import { AppService } from './app.service';
     CartModule,
     WatchModule,
     FavoriteModule,
+    DetailModule,
   ],
   controllers: [AppController],
   providers: [

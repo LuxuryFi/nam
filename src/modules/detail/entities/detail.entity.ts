@@ -1,6 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductEntity } from 'src/modules/product/entities/product.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('order_detail')
 export class DetailEntity extends BaseEntity {
@@ -39,4 +47,9 @@ export class DetailEntity extends BaseEntity {
     type: 'integer',
   })
   price: number;
+
+  @ApiProperty({ type: () => ProductEntity })
+  @ManyToOne(() => ProductEntity, (product) => product.details, { eager: true })
+  @JoinColumn({ name: 'product_id' }) // Specify the column name
+  product: ProductEntity;
 }
