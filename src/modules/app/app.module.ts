@@ -13,9 +13,11 @@ import { CategoryModule } from '../category/category.module';
 import { ConfigModule } from '../config/config.module';
 import { CONFIG } from '../config/config.provider';
 import { DiscountModule } from '../discount/discount.module';
+import { FavoriteModule } from '../favorite/favorite.module';
 import { OrderModule } from '../order/order.module';
 import { ProductModule } from '../product/product.module';
 import { UserModule } from '../users/users.module';
+import { WatchModule } from '../watch/watch.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -49,6 +51,8 @@ import { AppService } from './app.service';
     BannerModule,
     OrderModule,
     CartModule,
+    WatchModule,
+    FavoriteModule,
   ],
   controllers: [AppController],
   providers: [
@@ -59,4 +63,4 @@ import { AppService } from './app.service';
     AppService,
   ],
 })
-export class AppModule { }
+export class AppModule {}

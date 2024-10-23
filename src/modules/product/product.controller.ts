@@ -9,7 +9,6 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { HttpStatusCodes } from 'src/constants/common';
 import { Errors } from 'src/constants/errors';
@@ -59,21 +58,30 @@ export class ProductController {
   })
   async create(@Body() data: CreateProductDto, @Res() res: Response) {
     try {
-      const { price, stock_quantity, expired_date, description, status, user_id, product_name, image } = data;
+      const {
+        price,
+        stock_quantity,
+        expired_date,
+        description,
+        status,
+        user_id,
+        product_name,
+        image,
+      } = data;
 
       const payload = {
-        price, 
-        expired_date, 
-        description, 
-        status, 
-        stock_quantity, 
-        user_id, 
-        product_name, 
-        image,        
+        price,
+        expired_date,
+        description,
+        status,
+        stock_quantity,
+        user_id,
+        product_name,
+        image,
         created_at: new Date(),
       };
 
-      console.log(payload)
+      console.log(payload);
 
       const result = await this.productsService.store(payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
@@ -101,20 +109,28 @@ export class ProductController {
     @Res() res: Response,
   ) {
     try {
-      const { price, stock_quantity, expired_date, description, status, user_id, product_name, image } = data;
+      const {
+        price,
+        stock_quantity,
+        expired_date,
+        description,
+        status,
+        user_id,
+        product_name,
+        image,
+      } = data;
 
       const payload = {
-        price, 
-        expired_date, 
-        description, 
-        status, 
-        stock_quantity, 
-        user_id, 
-        product_name, 
-        image,        
+        price,
+        expired_date,
+        description,
+        status,
+        stock_quantity,
+        user_id,
+        product_name,
+        image,
         updated_at: new Date(),
       };
-
 
       const result = await this.productsService.update(id, payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation

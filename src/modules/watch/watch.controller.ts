@@ -13,72 +13,59 @@ import { Response } from 'express';
 import { HttpStatusCodes } from 'src/constants/common';
 import { Errors } from 'src/constants/errors';
 import { sendResponse } from 'src/utils/response.util';
-import { CreateCartDto } from './dto/cart.dto';
+import { CreateWatchDto } from './dto/watch.dto';
 
 import { Auth } from 'src/decorators/auth.decorator';
-import { CartService } from './cart.service';
-import { CreateCartResponse, GetCartResponse } from './response/cart.response';
-@Controller('carts')
-@ApiTags('Cart')
-export class CartController {
-  constructor(private readonly cartsService: CartService) {}
+import { CreateWatchResponse } from './response/watch.response';
+import { WatchService } from './watch.service';
+@Controller('watchs')
+@ApiTags('Watch')
+export class WatchController {
+  constructor(private readonly watchsService: WatchService) {}
 
   @Get('')
   @Auth()
   @ApiOperation({
-    summary: 'Get Public Cart',
+    summary: 'Get Public Watch',
   })
   async find(@Req() req: any): Promise<object> {
-    const userId = req.user['id'];
-    return this.cartsService.find({
-      where: {
-        user_id: userId,
-      },
-    });
-  }
-
-  @Get(':id')
-  @ApiOperation({
-    summary: 'Get One Public Cart',
-  })
-  @ApiOkResponse({
-    type: GetCartResponse,
-  })
-  async findOne(@Param('id') id: number): Promise<object> {
-    return this.cartsService.find({
-      where: {
-        user_id: id,
-      },
-    });
+    return this.watchsService.getList(req.user_id);
   }
 
   @Post()
+  @Auth()
   @ApiOperation({
-    summary: 'Create Public Cart',
+    summary: 'Create Public Watch',
   })
   @ApiOkResponse({
-    type: CreateCartResponse,
+    type: CreateWatchResponse,
   })
-  async create(@Body() data: CreateCartDto, @Res() res: Response) {
+  async create(
+    @Body() data: CreateWatchDto,
+    @Res() res: Response,
+    @Req() req: any,
+  ) {
     try {
-      const { product_id, amount, price, user_id } = data;
-
+      const { product_id } = data;
+      const userId = req.user['id'];
       const payload = {
         product_id,
-        amount,
-        price,
-        user_id,
+        user_id: userId,
         created_at: new Date(),
       };
 
-      const validateCart = await this.cartsService.validateCart(payload);
-      if (validateCart.amount > 0) {
-        payload.amount = payload.amount + validateCart.amount;
-        const result = await this.cartsService.update(validateCart.id, payload);
+      const validation = await this.watchsService.validateWatch(
+        product_id,
+        userId,
+      );
+
+      console.log('validate', validation);
+      if (validation) {
+        const result = await this.watchsService.delete(validation.id);
         return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
       }
 
-      const result = await this.cartsService.store(payload);
+      const result = await this.watchsService.store(payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
     } catch (err) {
       console.error('Error:', err); // Use console.error for logging errors
@@ -91,17 +78,10 @@ export class CartController {
     }
   }
 
-  @Auth()
   @Delete(':id')
-  async delete(
-    @Param('id') id: number,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async delete(@Param('id') id: number, @Res() res: Response) {
     try {
-      console.log('req', req);
-
-      const users = await this.cartsService.find({
+      const users = await this.watchsService.find({
         where: {
           id,
         },
@@ -116,7 +96,7 @@ export class CartController {
         );
       }
 
-      const result = await this.cartsService.delete(id);
+      const result = await this.watchsService.delete(id);
       return sendResponse(res, HttpStatusCodes.OK, result, null);
     } catch (err) {
       console.log('Error', err);

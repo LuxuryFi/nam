@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
-import { IsEmail, IsNumber, IsPhoneNumber, IsString } from 'class-validator';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Transform } from 'class-transformer';
+import { IsNumber, IsString } from 'class-validator';
+import { WatchEntity } from 'src/modules/watch/entities/watch.entity';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('product')
 export class ProductEntity extends BaseEntity {
@@ -92,4 +93,7 @@ export class ProductEntity extends BaseEntity {
     nullable: true,
   })
   expired_date: Date;
+
+  @OneToMany(() => WatchEntity, (watch) => watch.product)
+  watches: WatchEntity[];
 }
