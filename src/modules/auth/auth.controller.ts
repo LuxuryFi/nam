@@ -53,7 +53,7 @@ export class AuthController {
   })
   @ApiBearerAuth()
   refresh(@Req() req: any): Promise<LoginResponse> {
-    const userId = req.user['sub'];
+    const userId = req.user['id'];
     const refreshToken = req.user['refreshToken'];
     return this.authService.refreshTokens(userId, refreshToken);
   }

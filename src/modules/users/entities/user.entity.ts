@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEmail, IsNumber, IsString } from 'class-validator';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 
 @Entity('public_user')
 export class UserEntity extends BaseEntity {
@@ -112,7 +117,7 @@ export class UserEntity extends BaseEntity {
 
   @ApiProperty()
   @Column({
-    type: Date,
+    type: 'timestamp', // Use 'timestamp' or 'datetime'
     nullable: true,
     default: () => 'CURRENT_TIMESTAMP',
   })

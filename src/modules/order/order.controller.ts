@@ -50,11 +50,11 @@ export class OrderController {
     });
   }
 
+  @Auth()
   @Post()
   @ApiOperation({
     summary: 'Create Public Order',
   })
-  @Auth()
   @ApiOkResponse({
     type: CreateOrderResponse,
   })
@@ -64,9 +64,10 @@ export class OrderController {
     @Res() res: Response,
   ) {
     try {
-      const user_id = req.user.user_id;
+      const user_id = req.user.id;
       const carts = await this.ordersService.getCartDetail(user_id);
-
+      console.log('carts', req.user);
+      console.log('order', user_id);
       if (carts.length <= 0) {
         return sendResponse(
           res,

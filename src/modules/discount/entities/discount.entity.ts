@@ -1,7 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsEmail, IsNumber, IsPhoneNumber, IsString } from 'class-validator';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsNumber, IsString } from 'class-validator';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProductEntity } from '../../product/entities/product.entity';
 
 @Entity('discount')
 export class DiscountEntity extends BaseEntity {
@@ -52,6 +60,22 @@ export class DiscountEntity extends BaseEntity {
   discount_percentage: number;
 
   @ApiProperty()
+  @IsNumber()
+  @Column({
+    type: 'integer',
+    default: 0,
+  })
+  product_id: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @Column({
+    type: 'integer',
+    default: 0,
+  })
+  category_id: number;
+
+  @ApiProperty()
   @Column({
     type: 'boolean',
     nullable: true,
@@ -90,4 +114,11 @@ export class DiscountEntity extends BaseEntity {
     nullable: true,
   })
   end_date: Date;
+
+  @ApiProperty({ type: () => ProductEntity })
+  @ManyToOne(() => ProductEntity, (product) => product.discounts, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'product_id' }) // Specify the column name
+  product: ProductEntity;
 }

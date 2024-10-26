@@ -26,15 +26,15 @@ import {
 export class ProductController {
   constructor(private readonly productsService: ProductService) {}
 
-  @Get('')
+  @Get('/product')
   @ApiOperation({
     summary: 'Get Public Product',
   })
   async find(): Promise<object> {
-    return this.productsService.find();
+    return this.productsService.findAll();
   }
 
-  @Get(':id')
+  @Get('/product/:id')
   @ApiOperation({
     summary: 'Get One Public Product',
   })
@@ -49,7 +49,7 @@ export class ProductController {
     });
   }
 
-  @Post()
+  @Post('/product')
   @ApiOperation({
     summary: 'Create Public Product',
   })
@@ -63,7 +63,6 @@ export class ProductController {
         stock_quantity,
         expired_date,
         description,
-        status,
         user_id,
         product_name,
         image,
@@ -73,7 +72,7 @@ export class ProductController {
         price,
         expired_date,
         description,
-        status,
+        status: true,
         stock_quantity,
         user_id,
         product_name,
@@ -96,7 +95,7 @@ export class ProductController {
     }
   }
 
-  @Put(':id')
+  @Put('/product/:id')
   @ApiOperation({
     summary: 'Update Public Product',
   })
@@ -145,7 +144,7 @@ export class ProductController {
     }
   }
 
-  @Delete(':id')
+  @Delete('/product/:id')
   async delete(@Param('id') id: number, @Res() res: Response) {
     try {
       const users = await this.productsService.find({
@@ -168,5 +167,13 @@ export class ProductController {
     } catch (err) {
       console.log('Error', err);
     }
+  }
+
+  @Get('/expired')
+  @ApiOperation({
+    summary: 'Get Public Product',
+  })
+  async expired(): Promise<object> {
+    return this.productsService.getExpiredItem();
   }
 }

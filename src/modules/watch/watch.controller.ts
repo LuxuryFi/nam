@@ -29,7 +29,7 @@ export class WatchController {
     summary: 'Get Public Watch',
   })
   async find(@Req() req: any): Promise<object> {
-    return this.watchsService.getList(req.user_id);
+    return this.watchsService.getList(req.id);
   }
 
   @Post()

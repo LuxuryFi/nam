@@ -29,7 +29,7 @@ export class FavoriteController {
     summary: 'Get Public Favorite',
   })
   async find(@Req() req: any): Promise<object> {
-    return this.favoritesService.getList(req.user.user_id);
+    return this.favoritesService.getList(req.user.id);
   }
 
   @Post()

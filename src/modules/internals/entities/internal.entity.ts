@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsPhoneNumber, IsString } from 'class-validator';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductEntity } from 'src/modules/product/entities/product.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('internal_user')
 export class InternalEntity extends BaseEntity {
@@ -108,4 +115,7 @@ export class InternalEntity extends BaseEntity {
     default: () => 'CURRENT_TIMESTAMP',
   })
   created_at: Date;
+
+  @OneToMany(() => ProductEntity, (product) => product.user)
+  product: ProductEntity[];
 }

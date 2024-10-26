@@ -2,12 +2,16 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
 import { DetailEntity } from 'src/modules/detail/entities/detail.entity';
+import { DiscountEntity } from 'src/modules/discount/entities/discount.entity';
 import { FavoriteEntity } from 'src/modules/favorite/entities/favorite.entity';
+import { InternalEntity } from 'src/modules/internals/entities/internal.entity';
 import { WatchEntity } from 'src/modules/watch/entities/watch.entity';
 import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -104,6 +108,13 @@ export class ProductEntity extends BaseEntity {
 
   @OneToMany(() => WatchEntity, (watch) => watch.product)
   watches: WatchEntity[];
+
+  @ManyToOne(() => InternalEntity, (user) => user.product)
+  @JoinColumn({ name: 'user_id' })
+  user: InternalEntity; // Foreign key reference
+
+  @OneToMany(() => DiscountEntity, (discounts) => discounts.product)
+  discounts: DiscountEntity[];
 
   @OneToMany(() => FavoriteEntity, (favorite) => favorite.product)
   favorites: FavoriteEntity[];
