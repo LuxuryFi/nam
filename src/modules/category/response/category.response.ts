@@ -20,7 +20,7 @@ export class CreateCategoryResponse {
   })
   category_name: string;
 
- 
+
   @IsString()
   @ApiProperty({
     description: 'status',
@@ -53,13 +53,11 @@ export class GetCategoryResponse {
   })
   category_name: string;
 
- 
   @IsString()
   @ApiProperty({
     description: 'status',
   })
   status: boolean;
-
 
   @ApiProperty({
     description: 'Create time',
@@ -86,13 +84,11 @@ export class UpdateCategoryResponse {
   })
   category_name: string;
 
- 
   @IsString()
   @ApiProperty({
     description: 'status',
   })
   status: boolean;
-
 
   @ApiProperty({
     description: 'Create time',

@@ -9,7 +9,6 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { HttpStatusCodes } from 'src/constants/common';
 import { Errors } from 'src/constants/errors';
@@ -64,6 +63,7 @@ export class CategoryController {
       const payload = {
         category_name,
         description,
+        created_at: new Date(),
       };
 
       const result = await this.categoriesService.store(payload);

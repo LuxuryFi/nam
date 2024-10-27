@@ -9,7 +9,6 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { HttpStatusCodes } from 'src/constants/common';
 import { Errors } from 'src/constants/errors';
@@ -59,21 +58,30 @@ export class DiscountController {
   })
   async create(@Body() data: CreateDiscountDto, @Res() res: Response) {
     try {
-      const { discount_name, status, description, discount_code, discount_percentage, price, start_date, end_date } = data;
-      console.log('data', data)
+      const {
+        discount_name,
+        status,
+        description,
+        discount_code,
+        discount_percentage,
+        price,
+        start_date,
+        end_date,
+      } = data;
+
       const payload = {
         discount_name,
         description,
-        discount_code, 
-        discount_percentage, 
-        price, 
-        start_date, 
+        discount_code,
+        discount_percentage,
+        price,
+        start_date,
         end_date,
         status,
-        created_at: new Date()
+        created_at: new Date(),
       };
 
-      console.log(payload)
+      console.log(payload);
 
       const result = await this.discountsService.store(payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
@@ -101,15 +109,24 @@ export class DiscountController {
     @Res() res: Response,
   ) {
     try {
-      const { discount_name, status, description, discount_code, discount_percentage, price, start_date, end_date } = data;
+      const {
+        discount_name,
+        status,
+        description,
+        discount_code,
+        discount_percentage,
+        price,
+        start_date,
+        end_date,
+      } = data;
 
       const payload = {
         discount_name,
         description,
-        discount_code, 
-        discount_percentage, 
-        price, 
-        start_date, 
+        discount_code,
+        discount_percentage,
+        price,
+        start_date,
         end_date,
         status,
       };

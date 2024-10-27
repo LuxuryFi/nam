@@ -47,9 +47,10 @@ export class FavoriteController {
   ) {
     try {
       const { product_id } = data;
+      console.log('product', product_id)
       const userId = req.user['id'];
       const payload = {
-        product_id,
+        product_id: product_id,
         user_id: userId,
         created_at: new Date(),
       };

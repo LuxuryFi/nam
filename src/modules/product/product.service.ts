@@ -24,7 +24,7 @@ export class ProductService extends BaseService<ProductEntity> {
       where: {
         status: true,
       },
-      relations: ['discounts', 'user'],
+      relations: ['discounts', 'user', 'category'],
     });
 
     console.log('product', products);
@@ -42,6 +42,7 @@ export class ProductService extends BaseService<ProductEntity> {
             : 0,
         user_id: product.user ? product.user.id : '',
         author: product.user ? product.user.name : 0,
+        category_name: product.category ? product.category.category_name : '',
       };
     });
 

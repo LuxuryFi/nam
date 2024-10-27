@@ -29,7 +29,7 @@ export class WatchController {
     summary: 'Get Public Watch',
   })
   async find(@Req() req: any): Promise<object> {
-    return this.watchsService.getList(req.id);
+    return this.watchsService.getList(req.user.id);
   }
 
   @Post()
@@ -46,6 +46,8 @@ export class WatchController {
     @Req() req: any,
   ) {
     try {
+      console.log('data', data);
+
       const { product_id } = data;
       const userId = req.user['id'];
       const payload = {
@@ -62,10 +64,13 @@ export class WatchController {
       console.log('validate', validation);
       if (validation) {
         const result = await this.watchsService.delete(validation.id);
+        console.log('result 2', result)
+
         return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
       }
 
       const result = await this.watchsService.store(payload);
+      console.log('result', result)
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
     } catch (err) {
       console.error('Error:', err); // Use console.error for logging errors

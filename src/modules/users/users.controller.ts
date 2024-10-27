@@ -77,6 +77,7 @@ export class UserController {
         name,
         url,
         status: 1,
+        created_at: new Date(),
       };
 
       const validate = await this.usersService.validateUser(payload);
@@ -127,6 +128,7 @@ export class UserController {
         name,
         url,
         status,
+        created_at: new Date(),
       };
 
       const validate = await this.usersService.validateUser(payload);

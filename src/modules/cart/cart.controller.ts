@@ -6,7 +6,7 @@ import {
   Param,
   Post,
   Req,
-  Res,
+  Res
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -30,11 +30,7 @@ export class CartController {
   })
   async find(@Req() req: any): Promise<object> {
     const userId = req.user['id'];
-    return this.cartsService.find({
-      where: {
-        user_id: userId,
-      },
-    });
+    return this.cartsService.findAll(userId);
   }
 
   @Get(':id')
@@ -73,7 +69,7 @@ export class CartController {
 
       const validateCart = await this.cartsService.validateCart(payload);
       if (validateCart.amount > 0) {
-        payload.amount = payload.amount + validateCart.amount;
+        payload.amount = payload.amount;
         const result = await this.cartsService.update(validateCart.id, payload);
         return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
       }
