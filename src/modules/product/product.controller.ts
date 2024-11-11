@@ -3,10 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  Options,
   Param,
   Post,
   Put,
+  Req,
   Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -15,6 +19,8 @@ import { Errors } from 'src/constants/errors';
 import { sendResponse } from 'src/utils/response.util';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 import { ProductService } from './product.service';
 import {
   CreateProductResponse,
@@ -25,6 +31,47 @@ import {
 @ApiTags('Product')
 export class ProductController {
   constructor(private readonly productsService: ProductService) {}
+  @Options('/upload')
+  handleOptions(@Req() req: Request, @Res() res: Response) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Authorization',
+    );
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.sendStatus(200); // Respond with 200 OK
+  }
+
+  @Post('/upload')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      // Configure Multer storage options
+      storage: diskStorage({
+        destination: './public/uploads', // Define the directory to store uploaded files
+        filename: (req, file, cb) => {
+          console.log('file', file);
+          console.log('req', req);
+          const filename = `${new Date().getTime()}-${file.originalname}`;
+          cb(null, filename); // Set the file name
+        },
+      }),
+      limits: {
+        fileSize: 10 * 1024 * 1024, // 10MB limit
+      },
+    }),
+  )
+  uploadFile(@UploadedFile() file) {
+    console.log(file); // File metadata, including path, name, etc.
+    return {
+      message: 'File uploaded successfully!',
+      file: {
+        originalname: file.originalname,
+        filename: file.filename, // This will include the timestamped filename
+        path: file.path, // Path to the uploaded file on the server
+      },
+    };
+  }
 
   @Get('/product')
   @ApiOperation({
@@ -63,24 +110,24 @@ export class ProductController {
         stock_quantity,
         expired_date,
         description,
-        user_id,
         product_name,
         image,
       } = data;
 
+      console.log('expired', data);
       const payload = {
         price,
-        expired_date,
+        expired_date: new Date(expired_date),
         description,
         status: true,
         stock_quantity,
-        user_id,
+        user_id: 1128,
         product_name,
         image,
         created_at: new Date(),
       };
 
-      console.log(payload);
+      console.log('payload', payload);
 
       const result = await this.productsService.store(payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
@@ -114,18 +161,17 @@ export class ProductController {
         expired_date,
         description,
         status,
-        user_id,
         product_name,
         image,
       } = data;
 
       const payload = {
         price,
-        expired_date,
+        expired_date: new Date(expired_date),
         description,
         status,
         stock_quantity,
-        user_id,
+        user_id: 1128,
         product_name,
         image,
         updated_at: new Date(),

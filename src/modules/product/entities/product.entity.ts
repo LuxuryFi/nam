@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
 import { CartEntity } from 'src/modules/cart/entities/cart.entity';
 import { CategoryEntity } from 'src/modules/category/entities/category.entity';
@@ -59,7 +58,6 @@ export class ProductEntity extends BaseEntity {
   price: string;
 
   @ApiProperty()
-  @IsString()
   @Column({
     type: 'char',
     length: 7,
@@ -101,12 +99,11 @@ export class ProductEntity extends BaseEntity {
   updated_at: Date;
 
   @ApiProperty()
-  @Transform(() => Date)
   @Column({
-    type: 'date',
+    type: Date,
     nullable: true,
-  })
-  expired_date: Date;
+  }) // This will ensure it's parsed as a Date if it's a valid string representation of a date
+  expired_date: Date; // or use Date if you expect Date objects
 
   @OneToMany(() => WatchEntity, (watch) => watch.product)
   watches: WatchEntity[];

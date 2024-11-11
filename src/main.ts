@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
+import { join } from 'path';
 import { AppModule } from './modules/app/app.module';
 import { CONFIG, getHost } from './modules/config/config.provider';
 
@@ -33,7 +34,15 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: false }));
 
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
+  app.enableCors({
+    origin: '*', // Allow frontend to access the backend
+    methods: 'GET,POST,PUT,PATCH,DELETE', // Allowed methods
+    allowedHeaders: 'Content-Type, Authorization', // Allowed headers
+  });
 
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/public',
+  });
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Food Store')
     .setDescription('Food Store - API description')
