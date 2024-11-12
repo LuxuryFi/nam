@@ -114,25 +114,26 @@ export class ProductController {
         image,
       } = data;
 
-      console.log('expired', data);
+      console.log('Data received:', data);
+
       const payload = {
         price,
         expired_date: new Date(expired_date),
         description,
         status: true,
-        stock_quantity,
+        stock_quantity: stock_quantity || '0',  // Default to '0' if not provided
         user_id: 1128,
         product_name,
         image,
         created_at: new Date(),
       };
 
-      console.log('payload', payload);
+      console.log('Payload for storing:', payload);
 
       const result = await this.productsService.store(payload);
-      return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
+      return sendResponse(res, HttpStatusCodes.CREATED, result, null);
     } catch (err) {
-      console.error('Error:', err); // Use console.error for logging errors
+      console.error('Error:', err);
       return sendResponse(
         res,
         HttpStatusCodes.INTERNAL_SERVER_ERROR,

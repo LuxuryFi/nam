@@ -49,11 +49,15 @@ export class AuthService {
   }
 
   async validateInternalUser(email: string, password: string) {
+    console.log('pass', password);
+    console.log('email', email);
+
     const user = await this.internalsService.findOne({
       where: {
         email,
       },
     });
+
     console.log('user', user);
     if (!user) throw new NotFoundException(Errors.USER_NOT_FOUND);
 

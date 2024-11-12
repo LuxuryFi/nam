@@ -58,10 +58,10 @@ export class ProductEntity extends BaseEntity {
   price: string;
 
   @ApiProperty()
+  @IsString()
   @Column({
     type: 'char',
     length: 7,
-    default: '',
   })
   stock_quantity: string;
 

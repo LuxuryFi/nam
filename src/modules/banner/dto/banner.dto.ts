@@ -4,8 +4,6 @@ import { BannerEntity } from 'src/modules/banner/entities/banner.entity';
 export class CreateBannerDto extends PickType(BannerEntity, [
   'area_id',
   'image_url',
-  'link_url',
-  'status',
   'created_at',
   'updated_at',
   'start_date',
@@ -18,7 +16,6 @@ export class CreateBannerDto extends PickType(BannerEntity, [
 export class UpdateBannerDto extends PickType(BannerEntity, [
   'area_id',
   'image_url',
-  'link_url',
   'status',
   'created_at',
   'updated_at',

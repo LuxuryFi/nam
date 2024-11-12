@@ -60,7 +60,6 @@ export class DiscountController {
     try {
       const {
         discount_name,
-        status,
         description,
         discount_code,
         discount_percentage,
@@ -69,19 +68,21 @@ export class DiscountController {
         end_date,
       } = data;
 
+      console.log('data', data);
+
       const payload = {
         discount_name,
         description,
         discount_code,
         discount_percentage,
         price,
-        start_date,
-        end_date,
-        status,
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
+        status: 1,
         created_at: new Date(),
       };
 
-      console.log(payload);
+      console.log('payload', payload);
 
       const result = await this.discountsService.store(payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
@@ -126,8 +127,8 @@ export class DiscountController {
         discount_code,
         discount_percentage,
         price,
-        start_date,
-        end_date,
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
         status,
       };
 

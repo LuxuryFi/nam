@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class CreateBannerResponse {
   @IsNumber()
@@ -40,6 +40,7 @@ export class CreateBannerResponse {
 
 
   @IsString()
+  @IsBoolean()
   @ApiProperty({
     description: 'status',
   })
@@ -86,7 +87,7 @@ export class GetBannerResponse {
   })
   banner_name: string;
 
- 
+
   @IsString()
   @ApiProperty({
     description: 'status',
@@ -119,7 +120,7 @@ export class UpdateBannerResponse {
   })
   banner_name: string;
 
- 
+
   @IsString()
   @ApiProperty({
     description: 'status',

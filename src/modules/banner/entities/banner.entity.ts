@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsEmail, IsNumber, IsPhoneNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('banner')
@@ -44,7 +44,6 @@ export class BannerEntity extends BaseEntity {
   image_url: string;
 
   @ApiProperty()
-  @IsNumber()
   @Column({
     type: 'integer',
     default: 0,
@@ -60,6 +59,7 @@ export class BannerEntity extends BaseEntity {
   area_id: number;
 
   @ApiProperty()
+  @IsBoolean()
   @Column({
     type: 'boolean',
     nullable: true,

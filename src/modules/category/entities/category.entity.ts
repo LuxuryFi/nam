@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsBoolean, IsString } from 'class-validator';
 import { ProductEntity } from 'src/modules/product/entities/product.entity';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -28,6 +28,7 @@ export class CategoryEntity extends BaseEntity {
   category_name: string;
 
   @ApiProperty()
+  @IsBoolean()
   @Column({
     type: 'boolean',
     nullable: true,

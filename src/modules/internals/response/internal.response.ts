@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class CreateUserResponse {
   @IsNumber()
@@ -32,7 +32,7 @@ export class CreateUserResponse {
   })
   phone: string;
 
-  @IsString()
+  @IsBoolean()
   @ApiProperty({
     description: 'status',
   })

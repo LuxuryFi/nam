@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsPhoneNumber, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsString } from 'class-validator';
 import { ProductEntity } from 'src/modules/product/entities/product.entity';
 import {
   BaseEntity,
@@ -43,7 +43,7 @@ export class InternalEntity extends BaseEntity {
   address: string;
 
   @ApiProperty()
-  @IsPhoneNumber()
+  @IsString()
   @Column({
     type: 'char',
     length: 256,
@@ -93,12 +93,29 @@ export class InternalEntity extends BaseEntity {
   name: string;
 
   @ApiProperty()
+  @IsBoolean()
   @Column({
     type: 'boolean',
     nullable: true,
     default: 1,
   })
   status: boolean;
+
+  @ApiProperty()
+  @Column({
+    type: 'boolean',
+    nullable: true,
+    default: 1,
+  })
+  gender: boolean;
+
+  @ApiProperty()
+  @Column({
+    type: 'integer',
+    nullable: true,
+    default: 1,
+  })
+  role: number;
 
   @ApiProperty()
   @Column({

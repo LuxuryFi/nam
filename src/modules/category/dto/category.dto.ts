@@ -4,7 +4,6 @@ import { CategoryEntity } from 'src/modules/category/entities/category.entity';
 export class CreateCategoryDto extends PickType(CategoryEntity, [
   'description',
   'category_name',
-  'status',
   'created_at',
 ]) {}
 

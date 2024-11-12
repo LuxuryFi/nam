@@ -25,7 +25,6 @@ export class AuthController {
     type: LoginResponse,
   })
   login(@Body() data: LoginDto): Promise<LoginResponse> {
-    console.log('data', data);
     return this.authService.login(data.email, data.password);
   }
 

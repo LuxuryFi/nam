@@ -99,6 +99,8 @@ export class CategoryController {
         description,
       };
 
+      console.log('payload', payload);
+
       const validate = await this.categoriesService.validateCategory(id);
 
       // Check if category already exists

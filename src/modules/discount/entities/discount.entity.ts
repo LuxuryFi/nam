@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 import {
   BaseEntity,
   Column,
@@ -76,6 +76,7 @@ export class DiscountEntity extends BaseEntity {
   category_id: number;
 
   @ApiProperty()
+  @IsBoolean()
   @Column({
     type: 'boolean',
     nullable: true,

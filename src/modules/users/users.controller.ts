@@ -3,14 +3,20 @@ import {
   Controller,
   Delete,
   Get,
+  Options,
   Param,
   Post,
   Put,
+  Req,
   Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
+import { diskStorage } from 'multer';
 import { HttpStatusCodes } from 'src/constants/common';
 import { Errors } from 'src/constants/errors';
 import { sendResponse } from 'src/utils/response.util';
@@ -25,6 +31,47 @@ import { UsersService } from './users.service';
 @ApiTags('Public User')
 export class UserController {
   constructor(private readonly usersService: UsersService) {}
+  @Options('/upload')
+  handleOptions(@Req() req: Request, @Res() res: Response) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Authorization',
+    );
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.sendStatus(200); // Respond with 200 OK
+  }
+
+  @Post('/upload')
+  @UseInterceptors(
+    FileInterceptor('url', {
+      // Configure Multer storage options
+      storage: diskStorage({
+        destination: './public/uploads', // Define the directory to store uploaded files
+        filename: (req, file, cb) => {
+          console.log('file', file);
+          console.log('req', req);
+          const filename = `${new Date().getTime()}-${file.originalname}`;
+          cb(null, filename); // Set the file name
+        },
+      }),
+      limits: {
+        fileSize: 10 * 1024 * 1024, // 10MB limit
+      },
+    }),
+  )
+  uploadFile(@UploadedFile() file) {
+    console.log(file); // File metadata, including path, name, etc.
+    return {
+      message: 'File uploaded successfully!',
+      file: {
+        originalname: file.originalname,
+        filename: file.filename, // This will include the timestamped filename
+        path: file.path, // Path to the uploaded file on the server
+      },
+    };
+  }
 
   @Get('')
   @ApiOperation({
@@ -65,7 +112,7 @@ export class UserController {
   @Post()
   async create(@Body() data: CreateUserDto, @Res() res: Response) {
     try {
-      const { password, email, type, address, phone, name, url } = data;
+      const { password, email, type, address, phone, name, url, gender } = data;
 
       const hashedPassword = bcrypt.hashSync(password, 10);
       const payload = {
@@ -74,6 +121,7 @@ export class UserController {
         type,
         address,
         phone,
+        gender,
         name,
         url,
         status: 1,
@@ -118,31 +166,21 @@ export class UserController {
     @Res() res: Response,
   ) {
     try {
-      const { email, type, address, phone, name, url, status } = data;
+      const { type, address, phone, name, url, status, gender } = data;
+      console.log('payload', data);
 
       const payload = {
-        email,
         type,
         address,
         phone,
         name,
         url,
+        gender,
         status,
         created_at: new Date(),
       };
 
-      const validate = await this.usersService.validateUser(payload);
-
-      // Check if user already exists
-      if (!validate) {
-        return sendResponse(
-          res,
-          HttpStatusCodes.CONFLICT,
-          null,
-          Errors.USER_EMAIL_EXISTED.message,
-        );
-      }
-
+      console.log('payload', payload);
       const result = await this.usersService.update(id, payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
     } catch (err) {

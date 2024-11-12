@@ -1,11 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEmail, IsNumber, IsString } from 'class-validator';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  PrimaryGeneratedColumn
-} from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('public_user')
 export class UserEntity extends BaseEntity {
@@ -27,6 +22,15 @@ export class UserEntity extends BaseEntity {
   email: string;
 
   @ApiProperty()
+  @IsBoolean()
+  @Column({
+    type: 'boolean',
+    nullable: true,
+    default: 1,
+  })
+  gender: boolean;
+
+  @ApiProperty()
   @IsString()
   @Column({
     type: 'char',
@@ -45,6 +49,7 @@ export class UserEntity extends BaseEntity {
   address: string;
 
   @ApiProperty()
+  @IsString()
   @Column({
     type: 'char',
     length: 256,
@@ -94,19 +99,13 @@ export class UserEntity extends BaseEntity {
   name: string;
 
   @ApiProperty()
+  @IsBoolean()
   @Column({
     type: 'boolean',
     nullable: true,
     default: 1,
   })
   status: boolean;
-
-  @IsBoolean()
-  @ApiProperty({
-    nullable: true,
-    description: 'gender',
-  })
-  gender: boolean;
 
   @ApiProperty()
   @Column({

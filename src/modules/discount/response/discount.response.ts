@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class CreateDiscountResponse {
   @IsNumber()
@@ -38,13 +38,11 @@ export class CreateDiscountResponse {
   })
   discount_percentage: number;
 
-
-  @IsString()
+  @IsBoolean()
   @ApiProperty({
     description: 'status',
   })
   status: boolean;
-
 
   @ApiProperty({
     description: 'Create at',
@@ -86,13 +84,11 @@ export class GetDiscountResponse {
   })
   discount_name: string;
 
- 
   @IsString()
   @ApiProperty({
     description: 'status',
   })
   status: boolean;
-
 
   @ApiProperty({
     description: 'Create time',
@@ -119,13 +115,11 @@ export class UpdateDiscountResponse {
   })
   discount_name: string;
 
- 
   @IsString()
   @ApiProperty({
     description: 'status',
   })
   status: boolean;
-
 
   @ApiProperty({
     description: 'Create time',
