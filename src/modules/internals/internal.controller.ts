@@ -159,7 +159,7 @@ export class InternalController {
     @Res() res: Response,
   ) {
     try {
-      const { email, type, address, phone, name, url, status } = data;
+      const { email, type, address, phone, name, url, status, gender } = data;
       console.log('payload', data);
 
       const payload = {
@@ -169,6 +169,7 @@ export class InternalController {
         phone,
         name,
         url,
+        gender,
         status,
       };
       console.log('payload', payload);

@@ -157,7 +157,6 @@ export class BannerController {
         description,
         display_order,
         area_id,
-        image_url,
         start_date,
         end_date,
       } = data;
@@ -167,8 +166,6 @@ export class BannerController {
         description,
         display_order,
         area_id,
-        link_url: image_url,
-        image_url,
         start_date,
         end_date,
         updated_at: new Date(),

@@ -39,6 +39,7 @@ export class CreateUserResponse {
   status: boolean;
 
   @IsString()
+  @IsBoolean()
   @ApiProperty({
     description: 'gender',
   })

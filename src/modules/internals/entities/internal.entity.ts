@@ -102,6 +102,7 @@ export class InternalEntity extends BaseEntity {
   status: boolean;
 
   @ApiProperty()
+  @IsBoolean()
   @Column({
     type: 'boolean',
     nullable: true,
