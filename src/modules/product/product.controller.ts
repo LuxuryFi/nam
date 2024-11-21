@@ -21,6 +21,7 @@ import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { Auth } from 'src/decorators/auth.decorator';
 import { ProductService } from './product.service';
 import {
   CreateProductResponse,
@@ -79,6 +80,17 @@ export class ProductController {
   })
   async find(): Promise<object> {
     return this.productsService.findAll();
+  }
+
+  @Auth()
+  @Get('/product/favorite')
+  @ApiOperation({
+    summary: 'Get Public Product',
+  })
+  async findFavorite(@Req() req): Promise<object> {
+    const userId = req.user['id'];
+
+    return this.productsService.findProductFavorite(userId);
   }
 
   @Get('/product/:id')

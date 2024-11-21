@@ -47,7 +47,7 @@ export class FavoriteController {
   ) {
     try {
       const { product_id } = data;
-      console.log('product', product_id)
+      console.log('product', product_id);
       const userId = req.user['id'];
       const payload = {
         product_id: product_id,
@@ -63,7 +63,14 @@ export class FavoriteController {
       console.log('validate', validation);
       if (validation) {
         const result = await this.favoritesService.delete(validation.id);
-        return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
+        return sendResponse(
+          res,
+          HttpStatusCodes.CREATED,
+          {
+            deleted_id: validation.id,
+          },
+          null,
+        ); // Use 201 Created for successful user creation
       }
 
       const result = await this.favoritesService.store(payload);

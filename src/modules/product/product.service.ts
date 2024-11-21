@@ -4,6 +4,8 @@ import { IConfig } from 'config';
 import { BaseService } from 'src/base/base.service';
 import { Repository } from 'typeorm';
 import { CONFIG } from '../config/config.provider';
+import { FavoriteEntity } from '../favorite/entities/favorite.entity';
+import { WatchEntity } from '../watch/entities/watch.entity';
 import { ProductEntity } from './entities/product.entity';
 
 @Injectable()
@@ -11,6 +13,11 @@ export class ProductService extends BaseService<ProductEntity> {
   constructor(
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
+    @InjectRepository(FavoriteEntity)
+    private readonly favoriteRepository: Repository<FavoriteEntity>,
+    @InjectRepository(WatchEntity)
+    private readonly watchRepository: Repository<WatchEntity>,
+
     @Inject(CONFIG) private readonly configService: IConfig,
   ) {
     super(productRepository);
@@ -91,5 +98,28 @@ export class ProductService extends BaseService<ProductEntity> {
     }
 
     return true;
+  }
+
+  async findProductFavorite(user_id) {
+    const favorites = await this.favoriteRepository.find({
+      where: {
+        user_id,
+      },
+    });
+    console.log("🚀 ~ ProductService ~ findProductFavorite ~ favorites:", favorites)
+
+    const watches = await this.watchRepository.find({
+      where: {
+        user_id,
+      },
+    });
+
+    const favoriteIDS = favorites.map((favorite) => favorite.product_id);
+    const watchIDS = watches.map((favorite) => favorite.product_id);
+
+    return {
+      watch: watchIDS,
+      favorites: favoriteIDS,
+    };
   }
 }
