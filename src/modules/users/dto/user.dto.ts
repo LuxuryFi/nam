@@ -9,7 +9,6 @@ export class CreateUserDto extends PickType(UserEntity, [
   'phone',
   'name',
   'url',
-  'status',
   'gender',
 ]) {}
 

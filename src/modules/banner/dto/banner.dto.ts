@@ -1,4 +1,5 @@
-import { PickType } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 import { BannerEntity } from 'src/modules/banner/entities/banner.entity';
 
 export class CreateBannerDto extends PickType(BannerEntity, [
@@ -6,21 +7,33 @@ export class CreateBannerDto extends PickType(BannerEntity, [
   'image_url',
   'created_at',
   'updated_at',
-  'start_date',
-  'end_date',
   'description',
   'display_order',
   'title',
-]) {}
+]) {
+  @ApiProperty({ required: false })
+  @IsOptional()
+  end_date?: string; // Make expired_date optional if not passed
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  start_date?: string; // Make expired_date optional if not passed
+}
 
 export class UpdateBannerDto extends PickType(BannerEntity, [
   'area_id',
   'status',
   'created_at',
   'updated_at',
-  'start_date',
-  'end_date',
   'description',
   'display_order',
   'title',
-]) {}
+]) {
+  @ApiProperty({ required: false })
+  @IsOptional()
+  end_date?: string; // Make expired_date optional if not passed
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  start_date?: string; // Make expired_date optional if not passed
+}

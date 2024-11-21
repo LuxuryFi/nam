@@ -84,6 +84,7 @@ export class BannerEntity extends BaseEntity {
   updated_at: Date;
 
   @ApiProperty()
+  @IsString()
   @Transform(() => Date)
   @Column({
     type: 'date',
@@ -92,6 +93,7 @@ export class BannerEntity extends BaseEntity {
   start_date: Date;
 
   @ApiProperty()
+  @IsString()
   @Type(() => Date)
   @Column({
     type: 'date',

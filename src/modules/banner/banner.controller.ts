@@ -112,6 +112,9 @@ export class BannerController {
         start_date,
         end_date,
       } = data;
+
+      console.log('payload', data);
+
       const payload = {
         title,
         status: 1,
@@ -120,11 +123,12 @@ export class BannerController {
         area_id,
         link_url: image_url,
         image_url,
-        start_date,
-        end_date,
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
         created_at: new Date(),
       };
 
+      console.log('payload', payload);
       const result = await this.bannersService.store(payload);
       return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
     } catch (err) {
@@ -166,8 +170,8 @@ export class BannerController {
         description,
         display_order,
         area_id,
-        start_date,
-        end_date,
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
         updated_at: new Date(),
       };
 
