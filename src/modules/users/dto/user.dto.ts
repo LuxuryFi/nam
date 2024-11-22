@@ -22,3 +22,5 @@ export class UpdateUserDto extends PickType(UserEntity, [
   'status',
   'gender',
 ]) {}
+
+export class ChangePasswordDto extends PickType(UserEntity, ['password']) {}

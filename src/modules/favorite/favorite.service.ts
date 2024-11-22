@@ -32,6 +32,7 @@ export class FavoriteService extends BaseService<FavoriteEntity> {
       product_name: watch.product.product_name,
       product_image: watch.product.image,
       product_status: watch.product.status,
+      product_id: watch.product_id,
       created_at: watch.created_at,
     }));
   }

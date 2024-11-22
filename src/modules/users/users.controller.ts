@@ -20,7 +20,7 @@ import { diskStorage } from 'multer';
 import { HttpStatusCodes } from 'src/constants/common';
 import { Errors } from 'src/constants/errors';
 import { sendResponse } from 'src/utils/response.util';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { ChangePasswordDto, CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import {
   CreateUserResponse,
   GetUserResponse,
@@ -43,7 +43,7 @@ export class UserController {
     res.sendStatus(200); // Respond with 200 OK
   }
 
-  @Post('/upload')
+  @Post('user/upload')
   @UseInterceptors(
     FileInterceptor('url', {
       // Configure Multer storage options
@@ -73,7 +73,7 @@ export class UserController {
     };
   }
 
-  @Get('')
+  @Get('user')
   @ApiOperation({
     summary: 'Get Public User',
   })
@@ -82,7 +82,7 @@ export class UserController {
     return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
   }
 
-  @Get(':id')
+  @Get('user/:id')
   @ApiOperation({
     summary: 'Get One Public User',
   })
@@ -153,7 +153,7 @@ export class UserController {
     }
   }
 
-  @Put(':id')
+  @Put('user/:id')
   @ApiOperation({
     summary: 'Update Public User',
   })
@@ -194,7 +194,39 @@ export class UserController {
     }
   }
 
-  @Delete(':id')
+  @Put('password/:id')
+  @ApiOperation({
+    summary: 'Update Public User Password',
+  })
+  @ApiOkResponse({
+    type: UpdateUserResponse,
+  })
+  async changePassword(
+    @Body() data: ChangePasswordDto,
+    @Param('id') id: number,
+    @Res() res: Response,
+  ) {
+    try {
+      const { password } = data;
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      const payload = {
+        password: hashedPassword,
+      };
+
+      const result = await this.usersService.update(id, payload);
+      return sendResponse(res, HttpStatusCodes.CREATED, result, null); // Use 201 Created for successful user creation
+    } catch (err) {
+      console.error('Error:', err); // Use console.error for logging errors
+      return sendResponse(
+        res,
+        HttpStatusCodes.INTERNAL_SERVER_ERROR,
+        null,
+        err.message,
+      );
+    }
+  }
+
+  @Delete('user/:id')
   async delete(@Param('id') id: number, @Res() res: Response) {
     try {
       const users = await this.usersService.find({

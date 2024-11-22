@@ -49,6 +49,9 @@ export class FavoriteController {
       const { product_id } = data;
       console.log('product', product_id);
       const userId = req.user['id'];
+
+      console.log('userId', userId);
+      console.log('product_id', product_id);
       const payload = {
         product_id: product_id,
         user_id: userId,

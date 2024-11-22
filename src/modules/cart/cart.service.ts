@@ -37,6 +37,7 @@ export class CartService extends BaseService<CartEntity> {
         created_at: cart.created_at,
         user_id: cart.user_id,
         product_id: cart.product_id,
+        image: cart.product.image || '',
         amount: cart.amount,
         discount:
           cart.product.discounts.length > 0
@@ -64,7 +65,7 @@ export class CartService extends BaseService<CartEntity> {
     }
 
     return {
-      amount: 0
+      amount: 0,
     };
   }
 }
